@@ -1,4 +1,21 @@
 <!DOCTYPE html>
+
+<!-- 
+Author: Jonathan Myers
+Date Last Modified: 10/1/2015
+
+This page has been created to serve as an introductory survey for Baylor University's CSI 1095 course, in order
+to provide anonymous information to the faculty about the opinions of newly enrolled computer science students. 
+Various echo statements throughout the program have been commented out - these statements serve the purpose of
+testing for data being added to the database. These statements have been commented out and left in, in the event
+that someone else desires to use this survey page and would like to easily test each potential addition to the
+database.
+
+The server name, username, password, and database name fields have all been left blank. Values need to be input
+for those in order for this page to successfully connect to a database.
+
+-->
+
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
 <head>
   <meta http-equiv="content-type" content="../text/html; charset=utf-8">
@@ -6,11 +23,6 @@
   <!-- Enable responsiveness on mobile devices-->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 
-  <title>
-
-     Jonathan Myers; Achnic LLC
-
-  </title>
   <!-- Icons -->
   <link rel="shortcut icon" href="../public/icon.ico">
 
@@ -24,12 +36,15 @@
 <body>
 
 <?php
+   // Declare the variables that are needed to connect to the database
    $servername = "localhost";
    $username = "";
    $password = "";
-   $dbname = "csistat";
+   $dbname = "";
+   
    // Create Connection
    $conn = new mysqli($servername, $username, $password, $dbname);
+   
    // Check connection
    if($conn->connect_error) {
       die("Connection failed: " . $conn->connect_error);
@@ -58,6 +73,9 @@
    $redo_questions = "";
 
    // Refresh the variables if the user submits
+   // This allows the variables to be auto-filled after a page refresh, in the event that a
+    // user did not complete the form, so that the user does not have to re-fill all the 
+    // information.
    if($_SERVER["REQUEST_METHOD"] == "POST") {
       $baylorid = test_input($_POST["baylorid"]);
       $q1 = test_input($_POST["q1"]);
@@ -98,7 +116,8 @@
       $q13 = test_input($_POST["q13"]);
       $q14 = test_input($_POST["q14"]);
       $q15 = test_input($_POST["q15"]);
-
+      
+      // Start a transaction, so you can roll back if necessary.
       $sql = "START TRANSACTION";
       if(mysqli_query($conn, $sql)) {
          //echo "Transaction Started Successfully.";
@@ -200,7 +219,7 @@
                echo "Error: " . $sql . "<br>" . mysqli_error($conn);
             }
          }
-      } else { 
+      } else { // If none of the options for 4 were selected, add 4 to the non-answered questions.
          $redo_questions = $redo_questions . "q4";
       }
       
@@ -251,7 +270,7 @@
                echo "Error: " . $sql . "<br>" . mysqli_error($conn);
             }
          }
-      } else { 
+      } else { // If none of the options for 5 were selected, add 5 to the non-answered questions.
          $redo_questions = $redo_questions . "q5"; 
       }
       
@@ -320,7 +339,7 @@
                echo "Error: " . $sql . "<br>" . mysqli_error($conn);
             }
          }
-      } else { 
+      } else { // If none of the options for 6 were selected, add 6 to the non-answered questions.
          $redo_questions = $redo_questions . "q6"; 
       }
       
@@ -333,7 +352,7 @@
          } else {
             echo "Error: " . $sql . "<br>" . mysqli_error($conn);
          }
-      } else { 
+      } else { // If none of the options for 7 were selected, add 7 to the non-answered questions.
          $redo_questions = $redo_questions . "q7"; 
       }
       
@@ -346,7 +365,7 @@
          } else {
             echo "Error: " . $sql . "<br>" . mysqli_error($conn);
          }
-      } else { 
+      } else { // If none of the options for 8 were selected, add 8 to the non-answered questions.
          $redo_questions = $redo_questions . "q8"; 
       }
       
@@ -406,7 +425,7 @@
                echo "Error: " . $sql . "<br>" . mysqli_error($conn);
             }
          }
-      } else {
+      } else { // If none of the options for 9 were selected, add 9 to the non-answered questions.
          $redo_questions = $redo_questions . "q9";
       }
       
@@ -457,7 +476,7 @@
                echo "Error: " . $sql . "<br>" . mysqli_error($conn);
             }
          }
-      } else {
+      } else { // If none of the options for 10 were selected, add 10 to the non-answered questions.
          $redo_questions = $redo_questions . "q10";
       }
       
@@ -470,7 +489,7 @@
          } else {
             echo "Error: " . $sql . "<br>" . mysqli_error($conn);
          }
-      } else {
+      } else { // If 11 was not answered selected, add 11 to the non-answered questions.
          $redo_questions = $redo_questions . "q11";
       }
       
@@ -505,7 +524,7 @@
          } else {
             echo "Error: " . $sql . "<br>" . mysqli_error($conn);
          }
-      } else {
+      } else { // If 14 was not answered selected, add 14 to the non-answered questions.
          $redo_questions = $redo_questions . "q14";
       }
       
@@ -518,7 +537,7 @@
          } else {
             echo "Error: " . $sql . "<br>" . mysqli_error($conn);
          }
-      } else {
+      } else { // If 15 was not answered selected, add 15 to the non-answered questions.
          $redo_questions = $redo_questions . "q15";
       } 
       // Check to see if all questions that require input had input present.
@@ -540,7 +559,7 @@
             echo "Error: " . $sql . "<br>" . mysqli_error($conn);
          }
          mysqli_close($conn); 
-      } else { // If not, rollback to before any data was added.
+      } else { // If not all required questions were answered, rollback to before any data was added to the database.
          if(!mysqli_query($conn, "ROLLBACK TO ADDING_DATA")) {
             echo "Error: " . $sql . "<br>" . mysqli_error($conn);
          }
@@ -558,6 +577,7 @@
       }
    }  
    
+   // Test the input data for the submit button.
    function test_input($data) {
       $data = trim($data);
       $data = stripslashes($data);
@@ -565,6 +585,8 @@
       return $data;
    } 
 ?>
+
+<!-- The rest of this document is the questions that are asked on the page. -->
 
 <h2>CSI 1095 Survey</h2>
 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
@@ -797,6 +819,8 @@ Last 4 Digits of Baylor ID Number: <input type="text" name="baylorid" value="<?p
 <textarea name="q15" rows="5" cols="49"><?php echo $q15;?>
 </textarea>
 <br><br>
+
+<!-- Submit button to input the data entered by the user --> 
 
 <br>
 <label>
