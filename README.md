@@ -1,8 +1,8 @@
 # csistat
-Analysis of data for the Baylor University Computer Science Department on the retention rate of females in the computer science department. The data was initially collected through a mandatory CSI 1095 course for freshman computer science majors through a web form they were given the link to.  
+Analysis of data for the Baylor University Computer Science Department on the retention rate of students in the computer science department. The data was initially collected through a mandatory CSI 1095 course for freshman/transfer computer science majors through a web form they were given the link to. A follow-up survey was conducted several weeks later, after the students had the opportunity to be exposed to more challenging computer science topics, and several computer science exams.  
   
 
-This web forms are both entitled index.php.  
+These web forms are both entitled index.php.  
   
 The initial survey is in **csistat**, and the follow-up survey is in **csistat2**  
   
